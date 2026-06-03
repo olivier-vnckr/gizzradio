@@ -1,17 +1,585 @@
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.06; }
-  50% { transform: translateY(-20px) rotate(5deg); opacity: 0.12; }
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gizz Radio — King Gizzard Fan Radio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.page-wrapper::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: repeating-linear-gradient(60deg, transparent, transparent 40px, 
-    rgba(95, 187, 70, 0.03) 40px, rgba(95, 187, 70, 0.03) 41px),
-    repeating-linear-gradient(-60deg, transparent, transparent 40px, 
-    rgba(245, 212, 66, 0.03) 40px, rgba(245, 212, 66, 0.03) 41px);
-  animation: float 8s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 0;
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* ── DARK CHARCOAL BACKGROUND WITH EMBER GLOW ── */
+    @keyframes emberGlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-wrapper::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: radial-gradient(ellipse at 20% 50%, rgba(57, 255, 20, 0.03) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 50%, rgba(255, 200, 0, 0.03) 0%, transparent 50%),
+                  radial-gradient(ellipse at 50% 0%, rgba(255, 50, 0, 0.02) 0%, transparent 40%),
+                  repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(57, 255, 20, 0.015) 4px, rgba(57, 255, 20, 0.015) 5px),
+                  repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(57, 255, 20, 0.015) 4px, rgba(57, 255, 20, 0.015) 5px),
+                  linear-gradient(180deg, #0a0a0a 0%, #1a0a00 30%, #0d0d0d 60%, #0a0a0a 100%);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 5px 5px, 5px 5px, 100% 100%;
+      animation: emberGlow 8s ease infinite;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .page-wrapper::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(57, 255, 20, 0.03) 0%, transparent 70%),
+        radial-gradient(circle at 75% 75%, rgba(255, 200, 0, 0.03) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ── FIRE / EMBER PARTICLES ── */
+    @keyframes emberRise {
+      0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(-20vh) scale(1) rotate(720deg); opacity: 0; }
+    }
+
+    @keyframes emberFloat {
+      0% { transform: translateY(100vh) translateX(0) scale(0.5); opacity: 0; }
+      20% { opacity: 0.6; }
+      80% { opacity: 0.6; }
+      100% { transform: translateY(-10vh) translateX(50px) scale(1); opacity: 0; }
+    }
+
+    .ember {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ember:nth-child(1) { left: 10%; animation: emberRise 12s linear infinite; animation-delay: 0s; background: #ff4500; box-shadow: 0 0 6px #ff4500; }
+    .ember:nth-child(2) { left: 20%; animation: emberFloat 14s linear infinite; animation-delay: 2s; background: #ffcc00; box-shadow: 0 0 6px #ffcc00; }
+    .ember:nth-child(3) { left: 30%; animation: emberRise 10s linear infinite; animation-delay: 4s; background: #39ff14; box-shadow: 0 0 6px #39ff14; }
+    .ember:nth-child(4) { left: 40%; animation: emberFloat 16s linear infinite; animation-delay: 1s; background: #ff6600; box-shadow: 0 0 8px #ff6600; }
+    .ember:nth-child(5) { left: 50%; animation: emberRise 11s linear infinite; animation-delay: 3s; background: #ffcc00; box-shadow: 0 0 6px #ffcc00; }
+    .ember:nth-child(6) { left: 60%; animation: emberFloat 13s linear infinite; animation-delay: 5s; background: #39ff14; box-shadow: 0 0 8px #39ff14; }
+    .ember:nth-child(7) { left: 70%; animation: emberRise 15s linear infinite; animation-delay: 2s; background: #ff4500; box-shadow: 0 0 6px #ff4500; }
+    .ember:nth-child(8) { left: 80%; animation: emberFloat 12s linear infinite; animation-delay: 6s; background: #ffcc00; box-shadow: 0 0 6px #ffcc00; }
+    .ember:nth-child(9) { left: 90%; animation: emberRise 14s linear infinite; animation-delay: 1s; background: #39ff14; box-shadow: 0 0 8px #39ff14; }
+    .ember:nth-child(10) { left: 15%; animation: emberFloat 11s linear infinite; animation-delay: 7s; background: #ff4500; box-shadow: 0 0 6px #ff4500; }
+    .ember:nth-child(11) { left: 45%; animation: emberRise 13s linear infinite; animation-delay: 4s; background: #ffcc00; box-shadow: 0 0 6px #ffcc00; }
+    .ember:nth-child(12) { left: 75%; animation: emberFloat 15s linear infinite; animation-delay: 3s; background: #39ff14; box-shadow: 0 0 8px #39ff14; }
+
+    /* ── MAIN CARD ── */
+    .main-card {
+      background: rgba(10, 10, 10, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 8px;
+      padding: 40px 32px;
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(57, 255, 20, 0.15),
+        0 0 30px rgba(57, 255, 20, 0.05),
+        inset 0 0 30px rgba(57, 255, 20, 0.02);
+      border: 1px solid rgba(57, 255, 20, 0.12);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── DOOM METAL HEADER ── */
+    @keyframes fireGlitch {
+      0% { text-shadow: 4px 0 #39ff14, -4px 0 #ff4500, 0 0 30px rgba(57,255,20,0.3); }
+      25% { text-shadow: -4px 0 #ffcc00, 4px 0 #39ff14, 0 0 30px rgba(255,200,0,0.3); }
+      50% { text-shadow: 4px 4px #ff4500, -4px -4px #39ff14, 0 0 30px rgba(255,50,0,0.3); }
+      75% { text-shadow: -4px 4px #39ff14, 4px -4px #ffcc00, 0 0 30px rgba(57,255,20,0.3); }
+      100% { text-shadow: 4px 0 #39ff14, -4px 0 #ff4500, 0 0 30px rgba(57,255,20,0.3); }
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      10% { opacity: 0.8; }
+      20% { opacity: 1; }
+      35% { opacity: 0.7; }
+      50% { opacity: 1; }
+      65% { opacity: 0.85; }
+      80% { opacity: 1; }
+      92% { opacity: 0.75; }
+    }
+
+    .header { text-align: center; margin-bottom: 40px; }
+    .header h1 {
+      font-family: 'Black Ops One', 'Inter', sans-serif;
+      font-size: 3.6rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #39ff14;
+      line-height: 1.1;
+      animation: fireGlitch 4s infinite, flicker 3s infinite;
+      text-transform: uppercase;
+    }
+    .header h1 span {
+      color: #ff4500;
+      text-shadow: 0 0 30px rgba(255, 50, 0, 0.6), 0 0 60px rgba(255, 50, 0, 0.3);
+      animation: flicker 2.5s infinite;
+    }
+    .header .subtitle {
+      font-family: 'Black Ops One', 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #39ff14, #ffcc00, #ff4500);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      margin-top: 10px;
+      text-shadow: none;
+    }
+    .header .tagline {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.35);
+      margin-top: 12px;
+      font-weight: 400;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── PLAYERS ── */
+    .player-section {
+      margin-bottom: 32px;
+      background: rgba(57, 255, 20, 0.02);
+      border-radius: 4px;
+      padding: 16px;
+      border: 1px solid rgba(57, 255, 20, 0.08);
+    }
+    .player-section:last-of-type { margin-bottom: 0; }
+    .player-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .player-header .dot { 
+      width: 16px; 
+      height: 16px; 
+      border-radius: 0; 
+      display: inline-block; 
+      transform: rotate(45deg);
+    }
+    .player-header .dot.rave { 
+      background: #39ff14; 
+      box-shadow: 0 0 16px #39ff14, 0 0 30px rgba(57,255,20,0.3); 
+    }
+    .player-header .dot.rock { 
+      background: #ff4500; 
+      box-shadow: 0 0 16px #ff4500, 0 0 30px rgba(255,50,0,0.3); 
+    }
+    .player-header h2 { 
+      font-family: 'Black Ops One', 'Inter', sans-serif;
+      font-size: 1.2rem; 
+      font-weight: 700; 
+      color: rgba(255,255,255,0.8); 
+      letter-spacing: 3px; 
+    }
+    .player-header .status {
+      font-size: 0.65rem; 
+      font-weight: 700; 
+      text-transform: uppercase; 
+      letter-spacing: 2px;
+      padding: 4px 14px; 
+      border-radius: 0;
+      background: rgba(57, 255, 20, 0.08);
+      color: #39ff14;
+      margin-left: auto;
+      border: 1px solid rgba(57, 255, 20, 0.25);
+    }
+
+    /* ── CUSTOM GILA MONSTER PLAYER ── */
+    .custom-player {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+      background: #050505;
+      border: 1px solid rgba(57,255,20,0.08);
+    }
+
+    .album-art-container {
+      width: 110px;
+      height: 110px;
+      flex-shrink: 0;
+      border: 1px solid rgba(57,255,20,0.2);
+      background: #0a0a0a;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .album-art {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.3s;
+    }
+
+    .art-skeleton {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 5px,
+        rgba(57,255,20,0.03) 5px,
+        rgba(57,255,20,0.03) 6px
+      );
+      pointer-events: none;
+    }
+
+    .track-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .track-title {
+      font-family: 'Black Ops One', sans-serif;
+      font-size: 1.1rem;
+      color: #39ff14;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(57,255,20,0.3);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-artist {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 4px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ── AUDIO ELEMENT ── */
+    .track-info audio {
+      margin-top: 12px;
+      width: 100%;
+      height: 40px;
+      border-radius: 2px;
+      background: #0a0a0a;
+      #border: 1px solid rgba(57,255,20,0.2);
+      outline: none;
+    }
+
+    .track-info audio::-webkit-media-controls-panel {
+      background-color: #0a0a0a;
+      border: none !important;
+    }
+
+    .track-info audio::-webkit-media-controls-enclosure {
+      border: none !important;
+    }
+
+    .track-info audio::-webkit-media-controls-play-button,
+    .track-info audio::-webkit-media-controls-mute-button {
+      filter: invert(1) brightness(1.8);
+    }
+
+    .track-info audio::-webkit-media-controls-timeline,
+    .track-info audio::-webkit-media-controls-volume-slider {
+      filter: invert(1) brightness(1.8);
+    }
+
+    .track-info audio::-webkit-media-controls-current-time-display,
+    .track-info audio::-webkit-media-controls-time-remaining-display {
+      color: #39ff14;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      background: transparent !important;
+      text-shadow: none !important;
+    }
+
+
+    /* ── LINKS ── */
+    .links-section { margin-top: 40px; }
+    .links-section h3 { 
+      font-size: 0.7rem; 
+      font-weight: 700; 
+      text-transform: uppercase; 
+      letter-spacing: 6px; 
+      color: #39ff14; 
+      text-align: center; 
+      margin-bottom: 20px; 
+    }
+    .links-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .links-grid a {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 12px 24px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 2px; 
+      font-size: 0.8rem; 
+      font-weight: 600;
+      color: rgba(255,255,255,0.6); 
+      text-decoration: none;
+      transition: all 0.15s ease;
+      border: 1px solid rgba(57,255,20,0.08);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .links-grid a:hover {
+      background: rgba(57,255,20,0.05);
+      color: #39ff14;
+      transform: translateY(-2px);
+      border-color: #39ff14;
+      box-shadow: 0 6px 20px rgba(57,255,20,0.1);
+    }
+
+    .bottom-section { margin-top: 40px; text-align: center; }
+
+    .bmc-button {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; margin-top: 20px;
+      background: rgba(255, 200, 0, 0.12);
+      color: #ffcc00; 
+      border: 2px solid #ffcc00;
+      border-radius: 2px;
+      font-size: 0.8rem; 
+      font-weight: 700; 
+      cursor: pointer; 
+      text-decoration: none;
+      transition: all 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(255, 200, 0, 0.4);
+      box-shadow: 0 0 15px rgba(255, 200, 0, 0.15);
+    }
+    .bmc-button:hover {
+      background: rgba(255,200,0,0.22);
+      border-color: #ff4500;
+      color: #ff4500;
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(255, 69, 0, 0.3), 0 8px 20px rgba(255,200,0,0.2);
+      text-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
+    }
+    .bmc-button svg { width: 18px; height: 18px; }
+
+    .supporter-text {
+      font-size: 0.75rem;
+      color: #ffcc00;
+      margin-top: 16px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .footer-text { 
+      font-size: 0.7rem; 
+      color: rgba(255,255,255,0.15); 
+      margin-top: 24px; 
+      letter-spacing: 1px; 
+      text-transform: uppercase; 
+    }
+
+    .contact { 
+      font-size: 0.7rem;
+      margin-top: 8px;
+    }
+    .contact a { 
+      color: rgba(255,255,255,0.3); 
+      text-decoration: none; 
+      transition: color 0.15s;
+    }
+    .contact a:hover { color: rgba(255,255,255,0.5); }
+
+    /* ── DRAGON EYES ── */
+    @keyframes glowEyes {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    .dragon-eyes {
+      position: fixed;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 40px;
+      letter-spacing: 20px;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+      animation: glowEyes 4s ease-in-out infinite;
+      filter: blur(1px) drop-shadow(0 0 20px #39ff14);
+      user-select: none;
+    }
+
+    @media (max-width: 600px) {
+      .page-wrapper { padding: 16px 12px 40px; }
+      .main-card { padding: 24px 16px; }
+      .header h1 { font-size: 2.6rem; }
+      .custom-player { flex-direction: column; align-items: center; }
+      .album-art-container { width: 90px; height: 90px; }
+      .track-info { text-align: center; }
+      .track-title { font-size: 0.9rem; }
+      .links-grid a { width: 100%; justify-content: center; }
+      .dragon-eyes { display: none; }
+      .ember { width: 3px; height: 3px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── DRAGON EYES ── -->
+<div class="dragon-eyes">👁️‍🗨️👁️‍🗨️</div>
+
+<!-- ── EMBER PARTICLES ── -->
+<div class="ember"></div>
+<div class="ember"></div>
+<div class="ember"></div>
+<div class="ember"></div>
+<div class="ember"></div>
+<div class="ember"></div>
+<div class="ember"></div>
+<div class="ember"></div>
+<div class="ember"></div>
+<div class="ember"></div>
+<div class="ember"></div>
+<div class="ember"></div>
+
+<div class="page-wrapper">
+  <div class="main-card">
+
+    <header class="header">
+      <h1>GIZZ <span>RADIO</span></h1>
+      <div class="subtitle">King Gizzard &amp; The Lizard Wizard</div>
+      <div class="subtitle">Bootleg Radio</div>
+      <p class="tagline">Non-stop live Gizzard.</p>
+    </header>
+
+    <!-- ═══ RAVE PLAYER ═══ -->
+    <section class="player-section">
+      <div class="player-header">
+        <span class="dot rave"></span>
+        <h2>RAVIN'</h2>
+        <span class="status">🔊 Live</span>
+      </div>
+      <div class="custom-player">
+        <div class="album-art-container">
+          <img id="rave-art" class="album-art" src="" alt="">
+          <div class="art-skeleton"></div>
+        </div>
+        <div class="track-info">
+          <div class="track-title" id="rave-title">Streaming Now</div>
+          <div class="track-artist" id="rave-artist">KGLW Rave Radio</div>
+          <audio id="rave-audio" controls>
+            <source src="https://radio.gizzradio.live/listen/rave/radio.mp3" type="audio/mpeg">
+          </audio>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ROCK PLAYER ═══ -->
+    <section class="player-section">
+      <div class="player-header">
+        <span class="dot rock"></span>
+        <h2>ROCKIN'</h2>
+        <span class="status">🔊 Live</span>
+      </div>
+      <div class="custom-player">
+        <div class="album-art-container">
+          <img id="rock-art" class="album-art" src="" alt="">
+          <div class="art-skeleton"></div>
+        </div>
+        <div class="track-info">
+          <div class="track-title" id="rock-title">Coming Soon</div>
+          <div class="track-artist" id="rock-artist">KGLW Rock Radio</div>
+          <audio id="rock-audio" controls>
+            <source src="https://radio.gizzradio.live/listen/rock/radio.mp3" type="audio/mpeg">
+          </audio>
+        </div>
+      </div>
+    </section>
+
+    <section class="links-section">
+      <h3>THE GIZZVERSE AWAITS</h3>
+      <div class="links-grid">
+        <a href="https://kinggizzardandthelizardwizard.com" target="_blank" rel="noopener">🎸 Official Site</a>
+        <a href="https://kinggizzard.bandcamp.com" target="_blank" rel="noopener">🎧 Bandcamp</a>
+        <a href="https://gizzverse.com" target="_blank" rel="noopener">🛒 Official Merch</a>
+      </div>
+    </section>
+
+    <section class="bottom-section">
+      <a class="bmc-button" href="https://buymeacoffee.com/kglwbootlegradio" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        KEEP US STREAMING
+      </a>
+      <p class="supporter-text">become a Supporter for $1/month.</p>
+      <p class="footer-text">Fan project. Not affiliated with KGATLW.</p>
+      <p class="contact"><a href="mailto:hello@gizzradio.live">hello@gizzradio.live</a></p>
+    </section>
+
+  </div>
+</div>
+
+<!-- ═══ NOW PLAYING SCRIPT ═══ -->
+<script>
+async function updateNowPlaying(station) {
+  try {
+    const res = await fetch(`https://radio.gizzradio.live/api/nowplaying/${station}`);
+    const data = await res.json();
+    if (data.now_playing && data.now_playing.song) {
+      const song = data.now_playing.song;
+      const titleEl = document.getElementById(`${station}-title`);
+      const artistEl = document.getElementById(`${station}-artist`);
+      const artEl = document.getElementById(`${station}-art`);
+      if (titleEl) titleEl.textContent = song.title || 'Streaming Now';
+      if (artistEl) artistEl.textContent = song.artist || 'KGLW Radio';
+      if (artEl && song.art) artEl.src = song.art;
+    }
+  } catch(e) {}
 }
+setInterval(() => {
+  updateNowPlaying('rave');
+  updateNowPlaying('rock');
+}, 15000);
+updateNowPlaying('rave');
+updateNowPlaying('rock');
+</script>
+
+</body>
+</html>
