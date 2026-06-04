@@ -311,6 +311,13 @@
       min-width: 0;
     }
 
+    .track-title-wrap {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      height: 1.4em;
+    }
+
     .track-title {
       font-family: 'Black Ops One', sans-serif;
       font-size: 1.1rem;
@@ -319,9 +326,26 @@
       text-transform: uppercase;
       text-shadow: 0 0 10px rgba(57,255,20,0.3);
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      display: inline-block;
+      position: absolute;
+      left: 0;
     }
+
+    .track-title.marquee {
+      animation: marqueeScroll var(--marquee-duration, 8s) linear infinite;
+      padding-right: 40px;
+    }
+
+    @keyframes marqueeScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(calc(-100% + var(--container-width, 300px) - 40px)); }
+    }
+
+    /* No animation while paused/loading */
+    .track-title-wrap.idle .track-title.marquee {
+      animation-play-state: paused;
+    }
+
 
     .track-artist {
       font-size: 0.75rem;
@@ -539,10 +563,8 @@
         overflow: hidden;
         width: 100%;
       }
-      .track-title { 
-        font-size: 0.9rem; 
-        max-width: 100%;
-      }
+      .track-title { font-size: 0.85rem; }
+      .track-title-wrap { height: 1.2em; }
       
       .control-row {
         justify-content: center;
@@ -624,7 +646,9 @@
           <div class="art-skeleton"></div>
         </div>
         <div class="track-info">
-          <div class="track-title" id="rock-title">Streaming Now</div>
+                    <div class="track-title-wrap" id="rock-title-wrap">
+            <div class="track-title" id="rock-title">Streaming Now</div>
+          </div>
           <div class="track-artist" id="rock-artist">KGLW Rock Radio</div>
           <div class="audio-controls">
             <div class="control-row">
@@ -657,7 +681,9 @@
           <div class="art-skeleton"></div>
         </div>
         <div class="track-info">
-          <div class="track-title" id="rave-title">Streaming Now</div>
+                    <div class="track-title-wrap" id="rave-title-wrap">
+            <div class="track-title" id="rave-title">Streaming Now</div>
+          </div>
           <div class="track-artist" id="rave-artist">KGLW Rave Radio</div>
           <div class="audio-controls">
             <div class="control-row">
@@ -772,6 +798,41 @@ function setupPlayer(station) {
 
 setupPlayer('rock');
 setupPlayer('rave');
+
+  // ── Marquee scroll for track titles ──
+function setupMarquee(station) {
+  const el = document.getElementById(`${station}-title`);
+  const wrap = document.getElementById(`${station}-title-wrap`);
+  
+  const observer = new MutationObserver(() => {
+    requestAnimationFrame(() => {
+      const overflows = el.scrollWidth > wrap.clientWidth;
+      if (overflows) {
+        const speed = Math.max(6, el.scrollWidth / 50);
+        el.style.setProperty('--marquee-duration', `${speed}s`);
+        el.style.setProperty('--container-width', `${wrap.clientWidth}px`);
+        el.classList.add('marquee');
+        wrap.classList.remove('idle');
+      } else {
+        el.classList.remove('marquee');
+        el.style.left = '0';
+        wrap.classList.add('idle');
+      }
+    });
+  });
+
+  observer.observe(el, { childList: true, characterData: true, subtree: true });
+  observer.observe(wrap, { attributes: true });
+  
+  // Initial check + resize listener
+  const check = () => observer.takeRecords().length || el.dispatchEvent(new Event('change'));
+  window.addEventListener('resize', () => setTimeout(check, 100));
+  check();
+}
+
+setupMarquee('rock');
+setupMarquee('rave');
+
 // ── Copy Direct Link ──
 document.querySelectorAll('.copy-link').forEach(btn => {
   btn.addEventListener('click', async () => {
