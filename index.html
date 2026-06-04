@@ -31,7 +31,6 @@
       overflow-x: hidden;
     }
 
-    /* ── DARK CHARCOAL BACKGROUND WITH EMBER GLOW ── */
     @keyframes emberGlow {
       0%, 100% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -76,7 +75,6 @@
       z-index: -1;
     }
 
-    /* ── FIRE / EMBER PARTICLES ── */
     @keyframes emberRise {
       0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
       10% { opacity: 0.8; }
@@ -181,51 +179,28 @@
       margin-top: 10px;
       text-shadow: none;
     }
-    .header .tagline {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.35);
-      margin-top: 12px;
-      font-weight: 400;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
 
-    /* ── PLAYERS ── */
-    .player-section {
-      margin-bottom: 32px;
-      background: rgba(57, 255, 20, 0.02);
-      border-radius: 4px;
-      padding: 16px;
-      border: 1px solid rgba(57, 255, 20, 0.08);
+    /* ── SECTION HEADERS (coherent style) ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
     }
-    .player-section:last-of-type { margin-bottom: 0; }
-    .player-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-    .player-header .dot { 
-      width: 16px; 
-      height: 16px; 
-      border-radius: 0; 
+    .section-header .icon { 
+      font-size: 1.3rem;
       display: inline-block; 
-      transform: rotate(45deg);
     }
-    .player-header .dot.rave { 
-      background: #39ff14; 
-      box-shadow: 0 0 16px #39ff14, 0 0 30px rgba(57,255,20,0.3); 
-    }
-    .player-header .dot.rock { 
-      background: #ff4500; 
-      box-shadow: 0 0 16px #ff4500, 0 0 30px rgba(255,50,0,0.3); 
-    }
-    .player-header h2 { 
+    .section-header h2, 
+    .section-header .section-label { 
       font-family: 'Black Ops One', 'Inter', sans-serif;
       font-size: 1.2rem; 
       font-weight: 700; 
       color: rgba(255,255,255,0.8); 
       letter-spacing: 3px; 
+      text-transform: uppercase;
     }
-    .player-header .status {
+    .section-header .status {
       font-size: 0.65rem; 
       font-weight: 700; 
       text-transform: uppercase; 
@@ -238,7 +213,17 @@
       border: 1px solid rgba(57, 255, 20, 0.25);
     }
 
-    /* ── CUSTOM GILA MONSTER PLAYER ── */
+    /* ── PLAYERS ── */
+    .player-section {
+      margin-bottom: 32px;
+      background: rgba(57, 255, 20, 0.02);
+      border-radius: 4px;
+      padding: 16px;
+      border: 1px solid rgba(57, 255, 20, 0.08);
+    }
+    .player-section:last-of-type { margin-bottom: 0; }
+
+    /* ── CUSTOM PLAYER ── */
     .custom-player {
       display: flex;
       align-items: center;
@@ -298,66 +283,108 @@
 
     .track-artist {
       font-size: 0.75rem;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.35);
       margin-top: 4px;
       letter-spacing: 2px;
       text-transform: uppercase;
     }
 
-    /* ── AUDIO ELEMENT ── */
-    .track-info audio {
-      margin-top: 12px;
+    /* ── CUSTOM AUDIO CONTROLS ── */
+    .audio-controls {
+      margin-top: 14px;
       width: 100%;
-      max-width: 100%;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .play-btn {
+      width: 40px;
       height: 40px;
-      border-radius: 2px;
-      background: #0a0a0a;
-      border: none;
-      outline: none;
-      display: block;
-    }
-
-    .track-info audio::-webkit-media-controls-panel {
-      background-color: #0a0a0a;
-      border: none !important;
-    }
-
-    .track-info audio::-webkit-media-controls-enclosure {
-      border: none !important;
-      max-width: 100%;
-    }
-
-    .track-info audio::-webkit-media-controls-play-button,
-    .track-info audio::-webkit-media-controls-mute-button {
-      filter: invert(1) brightness(1.8);
-    }
-
-    /* Hide timeline for live streams — prevents twitchy/jumping bar */
-    .track-info audio::-webkit-media-controls-timeline {
-      display: none;
-    }
-
-    /* Hide "live broadcast" dot that some browsers show */
-    .track-info audio::-webkit-media-controls-current-time-display,
-    .track-info audio::-webkit-media-controls-time-remaining-display {
+      flex-shrink: 0;
+      border: 1px solid #39ff14;
+      background: rgba(57,255,20,0.06);
       color: #39ff14;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.7rem;
-      background: transparent !important;
-      text-shadow: none !important;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .play-btn:hover { background: rgba(57,255,20,0.15); }
+    .play-btn:active { background: rgba(57,255,20,0.25); }
+
+    .volume-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 170px;
+      flex-shrink: 0;
     }
 
+    .volume-icon {
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      color: #39ff14;
+      text-shadow: 0 0 6px rgba(57,255,20,0.5);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+    }
 
-    /* ── LINKS ── */
-    .links-section { margin-top: 40px; }
-    .links-section h3 { 
-      font-size: 0.7rem; 
-      font-weight: 700; 
-      text-transform: uppercase; 
-      letter-spacing: 6px; 
-      color: #39ff14; 
-      text-align: center; 
-      margin-bottom: 20px; 
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 120px;
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      transform: rotate(45deg);
+      background: #39ff14;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(57,255,20,0.4);
+    }
+    .volume-slider::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      transform: rotate(45deg);
+      background: #39ff14;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(57,255,20,0.4);
+    }
+
+    /* ── LINKS SECTION ── */
+    .links-section { 
+      margin-top: 40px; 
+      border-top: 1px solid rgba(57, 255, 20, 0.08);
+      padding-top: 32px;
+    }
+    .links-section .section-header { 
+      justify-content: center; 
+      margin-bottom: 24px;
+    }
+    .links-section .section-header .section-label { 
+      font-size: 1rem;
+      color: rgba(255,255,255,0.8);
     }
     .links-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
     .links-grid a {
@@ -367,7 +394,7 @@
       border-radius: 2px; 
       font-size: 0.8rem; 
       font-weight: 600;
-      color: rgba(255,255,255,0.6); 
+      color: rgba(255,255,255,0.45); 
       text-decoration: none;
       transition: all 0.15s ease;
       border: 1px solid rgba(57,255,20,0.08);
@@ -382,14 +409,20 @@
       box-shadow: 0 6px 20px rgba(57,255,20,0.1);
     }
 
-    .bottom-section { margin-top: 40px; text-align: center; }
+    /* ── BOTTOM / DONATION ── */
+    .bottom-section { 
+      margin-top: 40px; 
+      text-align: center;
+      border-top: 1px solid rgba(57, 255, 20, 0.08);
+      padding-top: 32px;
+    }
 
     .bmc-button {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 28px; margin-top: 20px;
-      background: rgba(255, 200, 0, 0.12);
+      padding: 12px 28px;
+      background: rgba(255, 200, 0, 0.1);
       color: #ffcc00; 
-      border: 2px solid #ffcc00;
+      border: 1px solid rgba(255, 200, 0, 0.25);
       border-radius: 2px;
       font-size: 0.8rem; 
       font-weight: 700; 
@@ -398,46 +431,29 @@
       transition: all 0.15s ease;
       text-transform: uppercase;
       letter-spacing: 2px;
-      text-shadow: 0 0 10px rgba(255, 200, 0, 0.4);
-      box-shadow: 0 0 15px rgba(255, 200, 0, 0.15);
     }
     .bmc-button:hover {
-      background: rgba(255,200,0,0.22);
-      border-color: #ff4500;
-      color: #ff4500;
-      transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(255, 69, 0, 0.3), 0 8px 20px rgba(255,200,0,0.2);
-      text-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
-    }
-    .bmc-button svg { width: 18px; height: 18px; }
-
-    .supporter-text {
-      font-size: 0.75rem;
+      background: rgba(255,200,0,0.18);
+      border-color: #ffcc00;
       color: #ffcc00;
-      margin-top: 16px;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255,200,0,0.15);
+    }
+
+    .bottom-meta {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.25);
+      margin-top: 20px;
       letter-spacing: 1px;
       text-transform: uppercase;
-      opacity: 0.7;
+      line-height: 2;
     }
-
-    .footer-text { 
-      font-size: 0.7rem; 
-      color: rgba(255,255,255,0.15); 
-      margin-top: 24px; 
-      letter-spacing: 1px; 
-      text-transform: uppercase; 
-    }
-
-    .contact { 
-      font-size: 0.7rem;
-      margin-top: 8px;
-    }
-    .contact a { 
-      color: rgba(255,255,255,0.3); 
+    .bottom-meta a { 
+      color: rgba(255,255,255,0.25); 
       text-decoration: none; 
       transition: color 0.15s;
     }
-    .contact a:hover { color: rgba(255,255,255,0.5); }
+    .bottom-meta a:hover { color: rgba(255,255,255,0.5); }
 
     /* ── DRAGON EYES ── */
     @keyframes glowEyes {
@@ -467,11 +483,13 @@
       .custom-player { flex-direction: column; align-items: center; }
       .album-art-container { width: 90px; height: 90px; }
       .track-info { text-align: center; overflow: hidden; }
-      .track-info audio { max-width: 100%; width: 100%; }
       .track-title { font-size: 0.9rem; }
       .links-grid a { width: 100%; justify-content: center; }
       .dragon-eyes { display: none; }
       .ember { width: 3px; height: 3px; }
+      .play-btn { width: 36px; height: 36px; font-size: 1rem; }
+      .volume-wrap { width: 150px; }
+      .volume-slider { width: 100px; }
     }
 
   </style>
@@ -489,10 +507,8 @@
 </head>
 <body>
 
-<!-- ── DRAGON EYES ── -->
 <div class="dragon-eyes">👁️‍🗨️👁️‍🗨️</div>
 
-<!-- ── EMBER PARTICLES ── -->
 <div class="ember"></div>
 <div class="ember"></div>
 <div class="ember"></div>
@@ -515,12 +531,43 @@
       <div class="subtitle">Bootleg Radio</div>
     </header>
 
-    <!-- ═══ RAVE PLAYER ═══ -->
+    <!-- ═══ MELTING ═══ -->
     <section class="player-section">
-      <div class="player-header">
-        <span class="dot rave"></span>
-        <h2>RAVIN'</h2>
-        <span class="status">🔊 Live</span>
+      <div class="section-header">
+        <span class="icon">🍌</span>
+        <h2>MELTING</h2>
+        <span class="status">Live</span>
+      </div>
+      <div class="custom-player">
+        <div class="album-art-container">
+          <img id="rock-art" class="album-art" src="" alt="">
+          <div class="art-skeleton"></div>
+        </div>
+        <div class="track-info">
+          <div class="track-title" id="rock-title">Streaming Now</div>
+          <div class="track-artist" id="rock-artist">KGLW Rock Radio</div>
+          <div class="audio-controls">
+            <div class="control-row">
+              <button class="play-btn" id="rock-play" title="Play/Pause">▶</button>
+              <div class="volume-wrap">
+                <span class="volume-icon" id="rock-vol-icon">🔊</span>
+                <input type="range" class="volume-slider" id="rock-vol" min="0" max="100" value="80">
+              </div>
+            </div>
+          </div>
+          <audio id="rock-audio" preload="none">
+            <source src="https://radio.gizzradio.live/listen/rock/radio.mp3" type="audio/mpeg">
+          </audio>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ RAVIN' ═══ -->
+    <section class="player-section">
+      <div class="section-header">
+        <span class="icon">🕹️</span>
+        <h2>RAVING</h2>
+        <span class="status">Live</span>
       </div>
       <div class="custom-player">
         <div class="album-art-container">
@@ -530,37 +577,27 @@
         <div class="track-info">
           <div class="track-title" id="rave-title">Streaming Now</div>
           <div class="track-artist" id="rave-artist">KGLW Rave Radio</div>
-          <audio id="rave-audio" controls>
+          <div class="audio-controls">
+            <div class="control-row">
+              <button class="play-btn" id="rave-play" title="Play/Pause">▶</button>
+              <div class="volume-wrap">
+                <span class="volume-icon" id="rave-vol-icon">🔊</span>
+                <input type="range" class="volume-slider" id="rave-vol" min="0" max="100" value="80">
+              </div>
+            </div>
+          </div>
+          <audio id="rave-audio" preload="none">
             <source src="https://radio.gizzradio.live/listen/rave/radio.mp3" type="audio/mpeg">
           </audio>
         </div>
       </div>
     </section>
 
-    <!-- ═══ ROCK PLAYER ═══ -->
-    <section class="player-section">
-      <div class="player-header">
-        <span class="dot rock"></span>
-        <h2>ROCKIN'</h2>
-        <span class="status">🔊 Live</span>
-      </div>
-      <div class="custom-player">
-        <div class="album-art-container">
-          <img id="rock-art" class="album-art" src="" alt="">
-          <div class="art-skeleton"></div>
-        </div>
-        <div class="track-info">
-          <div class="track-title" id="rock-title">Coming Soon</div>
-          <div class="track-artist" id="rock-artist">KGLW Rock Radio</div>
-          <audio id="rock-audio" controls>
-            <source src="https://radio.gizzradio.live/listen/rock/radio.mp3" type="audio/mpeg">
-          </audio>
-        </div>
-      </div>
-    </section>
-
+    <!-- ═══ LINKS ═══ -->
     <section class="links-section">
-      <h3>The Gizzverse Awaits</h3>
+      <div class="section-header">
+        <span class="section-label">The Gizzverse Awaits</span>
+      </div>
       <div class="links-grid">
         <a href="https://kinggizzardandthelizardwizard.com" target="_blank" rel="noopener">🎸 Official Site</a>
         <a href="https://kinggizzard.bandcamp.com" target="_blank" rel="noopener">🎧 Bandcamp</a>
@@ -568,20 +605,70 @@
       </div>
     </section>
 
+    <!-- ═══ SUPPORT ═══ -->
     <section class="bottom-section">
       <a class="bmc-button" href="https://buymeacoffee.com/kglwbootlegradio" target="_blank" rel="noopener">
-        KEEP US STREAMING
+        SUPPORT THE STREAM
       </a>
-      <p class="supporter-text">support Gizz Radio for $1/month.</p>
-      <p class="footer-text">Fan project. Not affiliated with KGATLW</p>
-      <p class="contact"><a href="mailto:hello@gizzradio.live">hello@gizzradio.live</a></p>
+      <div class="bottom-meta">
+        <div>Non-profit, fan-run, 100% donation-funded.</div>
+        <div>$1/month or a single contribution — every bit keeps us streaming.</div>
+        <div style="margin-top:12px;">No affiliation. Just an enthusiastic bootlegger.</div>
+        <div style="margin-top:6px;"><a href="mailto:hello@gizzradio.live">hello@gizzradio.live</a></div>
+      </div>
     </section>
 
   </div>
 </div>
 
-<!-- ═══ NOW PLAYING SCRIPT ═══ -->
 <script>
+function setupPlayer(station) {
+  const audio = document.getElementById(`${station}-audio`);
+  const playBtn = document.getElementById(`${station}-play`);
+  const volSlider = document.getElementById(`${station}-vol`);
+  const volIcon = document.getElementById(`${station}-vol-icon`);
+
+  audio.volume = 0.8;
+
+  playBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play().catch(() => {});
+      playBtn.textContent = '⏸';
+    } else {
+      audio.pause();
+      playBtn.textContent = '▶';
+    }
+  });
+
+  audio.addEventListener('play', () => { playBtn.textContent = '⏸'; });
+  audio.addEventListener('pause', () => { playBtn.textContent = '▶'; });
+
+  volSlider.addEventListener('input', () => {
+    audio.volume = volSlider.value / 100;
+    updateVolIcon(volSlider.value, volIcon);
+  });
+
+  volIcon.addEventListener('click', () => {
+    if (audio.volume > 0) {
+      audio.volume = 0;
+      volSlider.value = 0;
+    } else {
+      audio.volume = 0.8;
+      volSlider.value = 80;
+    }
+    updateVolIcon(volSlider.value, volIcon);
+  });
+
+  function updateVolIcon(val, icon) {
+    if (val == 0) icon.textContent = '🔇';
+    else if (val < 50) icon.textContent = '🔉';
+    else icon.textContent = '🔊';
+  }
+}
+
+setupPlayer('rock');
+setupPlayer('rave');
+
 async function updateNowPlaying(station) {
   try {
     const res = await fetch(`https://radio.gizzradio.live/api/nowplaying/${station}`);
@@ -598,11 +685,11 @@ async function updateNowPlaying(station) {
   } catch(e) {}
 }
 setInterval(() => {
-  updateNowPlaying('rave');
   updateNowPlaying('rock');
+  updateNowPlaying('rave');
 }, 15000);
-updateNowPlaying('rave');
 updateNowPlaying('rock');
+updateNowPlaying('rave');
 </script>
 <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "36c0090938044148885177aae8e92a18"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
