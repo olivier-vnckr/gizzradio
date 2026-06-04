@@ -667,6 +667,8 @@
 </div>
 
 <script>
+let activeStation = null; // Track which station is currently playing
+
 function setupPlayer(station) {
   const audio = document.getElementById(`${station}-audio`);
   const playBtn = document.getElementById(`${station}-play`);
@@ -677,16 +679,37 @@ function setupPlayer(station) {
 
   playBtn.addEventListener('click', () => {
     if (audio.paused) {
+      // Pause the other station first
+      const other = station === 'rock' ? 'rave' : 'rock';
+      const otherAudio = document.getElementById(`${other}-audio`);
+      const otherBtn = document.getElementById(`${other}-play`);
+      if (!otherAudio.paused) {
+        otherAudio.pause();
+        otherBtn.textContent = '▶';
+      }
       audio.play().catch(() => {});
       playBtn.textContent = '⏸';
+      activeStation = station;
+      // Update Media Session immediately with current now-playing info
+      const titleEl = document.getElementById(`${station}-title`);
+      const artistEl = document.getElementById(`${station}-artist`);
+      const artEl = document.getElementById(`${station}-art`);
+      updateMediaSession(station, titleEl.textContent, artistEl.textContent, artEl.src);
     } else {
       audio.pause();
       playBtn.textContent = '▶';
+      activeStation = null;
     }
   });
 
-  audio.addEventListener('play', () => { playBtn.textContent = '⏸'; });
-  audio.addEventListener('pause', () => { playBtn.textContent = '▶'; });
+  audio.addEventListener('play', () => { 
+    playBtn.textContent = '⏸'; 
+    activeStation = station;
+  });
+  audio.addEventListener('pause', () => { 
+    playBtn.textContent = '▶'; 
+    if (activeStation === station) activeStation = null;
+  });
 
   volSlider.addEventListener('input', () => {
     audio.volume = volSlider.value / 100;
@@ -748,7 +771,10 @@ async function updateNowPlaying(station) {
       if (titleEl) titleEl.textContent = song.title || 'Streaming Now';
       if (artistEl) artistEl.textContent = song.artist || 'KGLW Radio';
       if (artEl && song.art) artEl.src = song.art;
-      updateMediaSession(station, song.title, song.artist, song.art);
+      // Only update the notification if this station is the active one
+      if (activeStation === station) {
+        updateMediaSession(station, song.title, song.artist, song.art);
+      }
     }
   } catch(e) {}
 }
@@ -759,6 +785,7 @@ setInterval(() => {
 updateNowPlaying('rock');
 updateNowPlaying('rave');
 </script>
+
 <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "36c0090938044148885177aae8e92a18"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
