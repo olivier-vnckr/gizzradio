@@ -179,6 +179,17 @@
       margin-top: 10px;
       text-shadow: none;
     }
+    .header .tagline {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.35);
+      margin-top: 12px;
+      font-weight: 400;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
     /* ── SECTION HEADERS (coherent style) ── */
     .section-header {
@@ -283,7 +294,7 @@
 
     .track-artist {
       font-size: 0.75rem;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.3);
       margin-top: 4px;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -476,20 +487,55 @@
       user-select: none;
     }
 
+    /* ── MOBILE FIXES ONLY ── */
     @media (max-width: 600px) {
       .page-wrapper { padding: 16px 12px 40px; }
       .main-card { padding: 24px 16px; }
+      
       .header h1 { font-size: 2.6rem; }
+      .header .subtitle {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      
       .custom-player { flex-direction: column; align-items: center; }
       .album-art-container { width: 90px; height: 90px; }
-      .track-info { text-align: center; overflow: hidden; }
-      .track-title { font-size: 0.9rem; }
+      
+      .track-info { 
+        text-align: center; 
+        overflow: hidden;
+        width: 100%;
+      }
+      .track-title { 
+        font-size: 0.9rem; 
+        max-width: 100%;
+      }
+      
+      .control-row {
+        justify-content: center;
+        flex-wrap: nowrap;
+        gap: 8px;
+      }
+      .play-btn { 
+        width: 36px; 
+        height: 36px; 
+        font-size: 1rem; 
+        flex-shrink: 0;
+      }
+      .volume-wrap { 
+        width: auto; 
+        flex: 1;
+        min-width: 60px;
+        max-width: 160px;
+      }
+      .volume-slider { 
+        width: 100%;
+        min-width: 40px;
+      }
+      
       .links-grid a { width: 100%; justify-content: center; }
       .dragon-eyes { display: none; }
       .ember { width: 3px; height: 3px; }
-      .play-btn { width: 36px; height: 36px; font-size: 1rem; }
-      .volume-wrap { width: 150px; }
-      .volume-slider { width: 100px; }
     }
 
   </style>
@@ -608,12 +654,11 @@
     <!-- ═══ SUPPORT ═══ -->
     <section class="bottom-section">
       <a class="bmc-button" href="https://buymeacoffee.com/kglwbootlegradio" target="_blank" rel="noopener">
-        SUPPORT THE STREAM
+        KEEP US STREAMING
       </a>
       <div class="bottom-meta">
         <div>Non-profit, fan-run, 100% donation-funded.</div>
-        <div>$1/month or a single contribution — every bit keeps us streaming.</div>
-        <div style="margin-top:12px;">No affiliation. Just an enthusiastic bootlegger.</div>
+                <div>$1/month or a single contribution — every bit keeps us streaming.</div>
         <div style="margin-top:6px;"><a href="mailto:hello@gizzradio.live">hello@gizzradio.live</a></div>
       </div>
     </section>
@@ -669,6 +714,28 @@ function setupPlayer(station) {
 setupPlayer('rock');
 setupPlayer('rave');
 
+// ── Media Session API (fixes Android notification art) ──
+function updateMediaSession(station, title, artist, artUrl) {
+  if ('mediaSession' in navigator) {
+    const audio = document.getElementById(`${station}-audio`);
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: title || 'Gizz Radio',
+      artist: artist || `KGLW ${station === 'rock' ? 'Rock' : 'Rave'} Radio`,
+      album: 'Live Bootlegs',
+      artwork: artUrl ? [
+        { src: artUrl, sizes: '300x300', type: 'image/jpeg' },
+        { src: artUrl, sizes: '512x512', type: 'image/jpeg' }
+      ] : [
+        { src: '/favicon.png', sizes: '64x64', type: 'image/png' },
+        { src: '/favicon.png', sizes: '128x128', type: 'image/png' }
+      ]
+    });
+    navigator.mediaSession.setActionHandler('play', () => audio.play());
+    navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+  }
+}
+
+// ── Now Playing ──
 async function updateNowPlaying(station) {
   try {
     const res = await fetch(`https://radio.gizzradio.live/api/nowplaying/${station}`);
@@ -681,6 +748,7 @@ async function updateNowPlaying(station) {
       if (titleEl) titleEl.textContent = song.title || 'Streaming Now';
       if (artistEl) artistEl.textContent = song.artist || 'KGLW Radio';
       if (artEl && song.art) artEl.src = song.art;
+      updateMediaSession(station, song.title, song.artist, song.art);
     }
   } catch(e) {}
 }
