@@ -308,11 +308,13 @@
     .track-info audio {
       margin-top: 12px;
       width: 100%;
+      max-width: 100%;
       height: 40px;
       border-radius: 2px;
       background: #0a0a0a;
       border: none;
       outline: none;
+      display: block;
     }
 
     .track-info audio::-webkit-media-controls-panel {
@@ -322,6 +324,7 @@
 
     .track-info audio::-webkit-media-controls-enclosure {
       border: none !important;
+      max-width: 100%;
     }
 
     .track-info audio::-webkit-media-controls-play-button,
@@ -329,11 +332,12 @@
       filter: invert(1) brightness(1.8);
     }
 
-    .track-info audio::-webkit-media-controls-timeline,
-    .track-info audio::-webkit-media-controls-volume-slider {
-      filter: invert(1) brightness(1.8);
+    /* Hide timeline for live streams — prevents twitchy/jumping bar */
+    .track-info audio::-webkit-media-controls-timeline {
+      display: none;
     }
 
+    /* Hide "live broadcast" dot that some browsers show */
     .track-info audio::-webkit-media-controls-current-time-display,
     .track-info audio::-webkit-media-controls-time-remaining-display {
       color: #39ff14;
@@ -342,6 +346,7 @@
       background: transparent !important;
       text-shadow: none !important;
     }
+
 
     /* ── LINKS ── */
     .links-section { margin-top: 40px; }
@@ -461,12 +466,14 @@
       .header h1 { font-size: 2.6rem; }
       .custom-player { flex-direction: column; align-items: center; }
       .album-art-container { width: 90px; height: 90px; }
-      .track-info { text-align: center; }
+      .track-info { text-align: center; overflow: hidden; }
+      .track-info audio { max-width: 100%; width: 100%; }
       .track-title { font-size: 0.9rem; }
       .links-grid a { width: 100%; justify-content: center; }
       .dragon-eyes { display: none; }
       .ember { width: 3px; height: 3px; }
     }
+
   </style>
   <script type="application/ld+json">
   {
