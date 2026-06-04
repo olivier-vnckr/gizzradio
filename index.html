@@ -390,53 +390,78 @@
     .volume-wrap {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       width: 170px;
       flex-shrink: 0;
     }
 
-    .volume-icon {
-      font-size: 0.9rem;
+    .vol-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.3);
       flex-shrink: 0;
-      color: #39ff14;
-      text-shadow: 0 0 6px rgba(57,255,20,0.5);
       user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      cursor: pointer;
+      width: 24px;
+      text-align: center;
     }
 
     .volume-slider {
       -webkit-appearance: none;
       appearance: none;
       width: 120px;
-      height: 4px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 2px;
+      height: 8px;
+      background: linear-gradient(90deg, 
+        rgba(57,255,20,0.08) 0%, 
+        rgba(57,255,20,0.2) 30%, 
+        rgba(57,255,20,0.4) 60%,
+        rgba(57,255,20,0.6) 100%);
+      border-radius: 0;
       outline: none;
       cursor: pointer;
       flex-shrink: 0;
+      border: none;
+      position: relative;
     }
     .volume-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 0;
       transform: rotate(45deg);
       background: #39ff14;
       border: none;
       cursor: pointer;
-      box-shadow: 0 0 8px rgba(57,255,20,0.4);
+      box-shadow: 0 0 12px rgba(57,255,20,0.6);
     }
     .volume-slider::-moz-range-thumb {
-      width: 14px;
-      height: 14px;
-      border-radius: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 0;
       transform: rotate(45deg);
       background: #39ff14;
       border: none;
       cursor: pointer;
-      box-shadow: 0 0 8px rgba(57,255,20,0.4);
+      box-shadow: 0 0 12px rgba(57,255,20,0.6);
     }
+    /* Firefox track override to remove default grey */
+    .volume-slider::-moz-range-track {
+      height: 8px;
+      background: linear-gradient(90deg, 
+        rgba(57,255,20,0.08) 0%, 
+        rgba(57,255,20,0.2) 30%, 
+        rgba(57,255,20,0.4) 60%,
+        rgba(57,255,20,0.6) 100%);
+      border: none;
+    }
+    /* IE/Edge */
+    .volume-slider::-ms-track {
+      height: 8px;
+      background: transparent;
+      border: none;
+      color: transparent;
+    }
+
 
     /* ── LINKS SECTION ── */
     .links-section { 
@@ -583,10 +608,9 @@
         min-width: 60px;
         max-width: 160px;
       }
-      .volume-slider { 
-        width: 100%;
-        min-width: 40px;
-      }
+           .volume-slider { width: 100%; min-width: 40px; height: 6px; }
+      .vol-label { width: 20px; font-size: 0.55rem; }
+
       
       .links-grid a { width: 100%; justify-content: center; }
       .dragon-eyes { display: none; }
@@ -653,10 +677,11 @@
           <div class="audio-controls">
             <div class="control-row">
               <button class="play-btn" id="rock-play" title="Play/Pause">▶</button>
-              <div class="volume-wrap">
-                <span class="volume-icon" id="rock-vol-icon">🔊</span>
+                                          <div class="volume-wrap">
+                <span class="vol-label" id="rock-vol-label">80</span>
                 <input type="range" class="volume-slider" id="rock-vol" min="0" max="100" value="80">
               </div>
+
             </div>
           </div>
           <audio id="rock-audio" preload="none">
@@ -689,9 +714,10 @@
             <div class="control-row">
               <button class="play-btn" id="rave-play" title="Play/Pause">▶</button>
               <div class="volume-wrap">
-                <span class="volume-icon" id="rave-vol-icon">🔊</span>
+                <span class="vol-label" id="rave-vol-label">80</span>
                 <input type="range" class="volume-slider" id="rave-vol" min="0" max="100" value="80">
               </div>
+
             </div>
           </div>
           <audio id="rave-audio" preload="none">
@@ -735,13 +761,12 @@ function setupPlayer(station) {
   const audio = document.getElementById(`${station}-audio`);
   const playBtn = document.getElementById(`${station}-play`);
   const volSlider = document.getElementById(`${station}-vol`);
-  const volIcon = document.getElementById(`${station}-vol-icon`);
+  const volLabel = document.getElementById(`${station}-vol-label`);
 
   audio.volume = 0.8;
 
   playBtn.addEventListener('click', () => {
     if (audio.paused) {
-      // Pause the other station first
       const other = station === 'rock' ? 'rave' : 'rock';
       const otherAudio = document.getElementById(`${other}-audio`);
       const otherBtn = document.getElementById(`${other}-play`);
@@ -752,7 +777,6 @@ function setupPlayer(station) {
       audio.play().catch(() => {});
       playBtn.textContent = '⏸';
       activeStation = station;
-      // Update Media Session immediately with current now-playing info
       const titleEl = document.getElementById(`${station}-title`);
       const artistEl = document.getElementById(`${station}-artist`);
       const artEl = document.getElementById(`${station}-art`);
@@ -775,10 +799,10 @@ function setupPlayer(station) {
 
   volSlider.addEventListener('input', () => {
     audio.volume = volSlider.value / 100;
-    updateVolIcon(volSlider.value, volIcon);
+    volLabel.textContent = volSlider.value;
   });
 
-  volIcon.addEventListener('click', () => {
+  volSlider.addEventListener('dblclick', () => {
     if (audio.volume > 0) {
       audio.volume = 0;
       volSlider.value = 0;
@@ -786,15 +810,9 @@ function setupPlayer(station) {
       audio.volume = 0.8;
       volSlider.value = 80;
     }
-    updateVolIcon(volSlider.value, volIcon);
+    volLabel.textContent = volSlider.value;
   });
 
-  function updateVolIcon(val, icon) {
-    if (val == 0) icon.textContent = '🔇';
-    else if (val < 50) icon.textContent = '🔉';
-    else icon.textContent = '🔊';
-  }
-}
 
 setupPlayer('rock');
 setupPlayer('rave');
