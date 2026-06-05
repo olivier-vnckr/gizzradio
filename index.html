@@ -170,6 +170,25 @@
       margin-top: 10px;
       text-shadow: none;
     }
+    @keyframes emberPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+    .header .subtitle-tagline {
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.2);
+      letter-spacing: 6px;
+      margin-top: 4px;
+      background: none;
+      -webkit-text-fill-color: initial;
+      -webkit-background-clip: initial;
+      background-clip: initial;
+      font-weight: 400;
+    }
+
+
+
+
     .header .tagline {
       font-size: 0.9rem;
       color: rgba(255, 255, 255, 0.35);
@@ -689,7 +708,7 @@
     <header class="header">
             <h1>GIZZ RADIO</h1>
       <div class="subtitle">King Gizzard &amp; The Lizard Wizard</div>
-      <div class="subtitle">Bootleg Radio</div>
+      <div class="subtitle subtitle-tagline">Bootleg Radio</div>
     </header>
 
     <!-- ═══ MELTING ═══ -->
