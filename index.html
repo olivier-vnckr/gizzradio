@@ -127,47 +127,35 @@
       position: relative;
       z-index: 2;
     }
-
-    /* ── NEON SIGN BUZZ HEADER ── */
-    @keyframes radioGlow {
-      0%, 100% {
-        text-shadow:
-          0 0 2px #0a0a0a, 0 0 5px #0a0a0a,
-          0 0 15px #ff4500, 0 0 40px rgba(255,50,0,0.3);
-      }
-      50% {
-        text-shadow:
-          0 0 2px #0a0a0a, 0 0 5px #0a0a0a,
-          0 0 25px #ff4500, 0 0 60px rgba(255,50,0,0.5);
-      }
-    }
-
-    @keyframes radioGlow {
-      0%, 100% {
-        text-shadow: 0 0 15px #ff4500, 0 0 40px rgba(255,50,0,0.3);
-      }
-      50% {
-        text-shadow: 0 0 25px #ff4500, 0 0 60px rgba(255,50,0,0.5);
-      }
-    }
-
     .header { text-align: center; margin-bottom: 40px; }
+
+    /* ── GEOMETRIC BARS HEADER ── */
+    @keyframes barSweep {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
     .header h1 {
       font-family: 'Black Ops One', 'Inter', sans-serif;
       font-size: 3.6rem;
       font-weight: 900;
       letter-spacing: 2px;
-      color: #39ff14;
-      line-height: 1.1;
       text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 8px;
       display: inline-block;
-      animation: neonFlicker 1.5s infinite;
-            margin-bottom: 8px;    
-    }
-    .header h1 span {
-      color: #ff4500;
-      display: inline-block;
-      animation: radioGlow 2s ease-in-out infinite;
+      background: repeating-linear-gradient(90deg,
+        #ffcc00 0, #ffcc00 4px,
+        transparent 4px, transparent 12px,
+        #39ff14 12px, #39ff14 16px,
+        transparent 16px, transparent 24px,
+        #ff4500 24px, #ff4500 28px,
+        transparent 28px, transparent 36px);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: barSweep 3s linear infinite;
     }
     .header .subtitle {
       font-family: 'Black Ops One', 'Inter', sans-serif;
@@ -541,11 +529,13 @@
 }
 .next-show-section .next-show-details .show-venue {
   font-weight: 600;
-  color: #a0ffb0;
+  color: #39ff14;
 }
 .next-show-section .next-show-details .show-location {
+  display: block;
   opacity: 0.6;
   font-size: 0.75rem;
+  margin-top: 4px;
 }
 
     .bmc-button {
@@ -697,7 +687,7 @@
   <div class="main-card">
 
     <header class="header">
-      <h1>GIZZ <span>RADIO</span></h1>
+            <h1>GIZZ RADIO</h1>
       <div class="subtitle">King Gizzard &amp; The Lizard Wizard</div>
       <div class="subtitle">Bootleg Radio</div>
     </header>
@@ -776,7 +766,7 @@
     <!-- ═══ LINKS ═══ -->
     <section class="links-section">
       <div class="section-header">
-        <span class="section-label">The Gizzverse Awaits</span>
+        <span class="section-label">Also check out</span>
       </div>
       <div class="links-grid">
         <a href="https://kinggizzardandthelizardwizard.com" target="_blank" rel="noopener">🎸 Official Site</a>
@@ -786,7 +776,7 @@
     </section>
     <!-- ═══ SHOWS ═══ -->
     <div id="next-show-section" class="next-show-section">
-      <div class="next-show-label">On the Horizon</div>
+      <div class="next-show-label">next show</div>
       <div id="next-show-details" class="next-show-details">Loading shows...</div>
     </div>
 
@@ -1016,7 +1006,7 @@ async function loadNextShow() {
 
     let html = `<span class="show-venue">${next.venue}</span> · ${formatted}`;
     if (next.location) {
-      html += ` <span class="show-location">📍 ${next.location}</span>`;
+      html += `<br><span class="show-location">📍 ${next.location}</span>`;
     }
 
     details.innerHTML = html;
