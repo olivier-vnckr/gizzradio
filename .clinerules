@@ -1,0 +1,89 @@
+# .clinerules — gizzradio
+
+## WHO'S WHO
+I direct the work; you implement. I do not hand-write code. Explain your plan in plain
+language and wait for my approval before changing anything.
+
+## PROJECT
+gizzradio.live — a non-commercial, fan-run online radio station for King Gizzard & The
+Lizard Wizard fans, built on the band's official Bootlegger program (non-commercial fan use).
+This repo is the FRONTEND ONLY: one static page (index.html) with inline <style> and
+<script>. No framework, no bundler, no package.json, no build step.
+Hosted on GitHub Pages with the custom domain gizzradio.live. main = production.
+
+## SCOPE — NEVER TOUCH, NEVER PROPOSE COMMANDS FOR
+- The VPS (Contabo): AzuraCast, Docker, NGINX, liquidsoap.liq, the AzuraCast DB,
+  /var/www/shows/, certbot
+- n8n (any instance or workflow)
+- DNS and domain settings (Namecheap, Cloudflare)
+- GitHub Pages settings, branch/repo settings
+- Any server-side credential or secret
+If a task appears to require any of the above, STOP and tell me — I'll handle it myself.
+
+## NON-NEGOTIABLES (fragile — don't touch without my explicit instruction + a test plan)
+- iOS header fixes: the dark text-shadow outline and the
+  @supports (-webkit-touch-callout: none) block. Keep them. If you refactor the header,
+  say so and list what must be tested on real iOS.
+- Mobile volume-slider fix: padding-right: 16px; box-sizing: border-box, inside the
+  max-width:600px media query. Keep.
+- One-at-a-time playback (shared activeStation state) is intended behaviour, not a bug.
+- Keep the fan-run / non-official / non-profit / donation framing in the footer.
+  Never weaken or remove the disclaimer. Never add anything commercial.
+- Never add secrets, API keys, or tokens to any file. The existing Cloudflare beacon
+  token is public by design — don't add more.
+
+## WORKING RULES
+- Never run destructive commands (rm, rm -rf, sudo, chmod, mv on tracked files).
+- Never read or write outside this workspace.
+- Never commit or push. Never touch main. I review, commit, and merge myself.
+- One change at a time; keep diffs small enough to review.
+- Prefer editing existing blocks over restructuring.
+- No new frameworks, build steps, dependencies, npm tooling, or CDN scripts without
+  asking first and explaining the trade-off. This project deliberately has none.
+- Don't assume something exists (file, setting, config). Check, or ask. Mark uncertainty
+  explicitly and never claim something works without evidence — write "unverified" instead.
+
+## LOCAL TESTING
+- No build step. Serve and open: python3 -m http.server 8080 -> http://localhost:8080
+- WARNING: the page fetches LIVE production data from radio.gizzradio.live
+  (read-only). Local dev is not isolated — real now-playing/show data is expected.
+- After CSS/layout changes, test at mobile width (<600px) as well, and flag iOS risks.
+
+## CONTENT — WHERE THINGS LIVE
+- Site copy, titles, outbound links, donation button -> index.html (edit here)
+- Music, playlists, playback rules -> AzuraCast admin UI (NOT here — tell me instead)
+- "Next show" data -> setlist.fm -> /var/www/shows/upcoming.json on the VPS (NOT editable
+  here; fix at source)
+- Now Playing -> live AzuraCast API (nothing to edit)
+Never invent local substitutes for anything in this list.
+
+## HOUSE STYLE
+- Vanilla HTML/CSS/JS only. Keep it dependency-free.
+- Match existing style; don't reformat unrelated code.
+- No AI/assistant commentary inside code.
+- Mobile and accessibility are part of "working" — don't regress them.
+
+## HOW TO TALK TO ME
+I am not a developer. I direct AI to build things; I don't write code.
+Optimise for my understanding, not for sounding impressive.
+
+BEFORE you do anything:
+1. Say WHAT you're going to do and WHY — plain language, no jargon. If a technical term is
+   unavoidable, define it in a few words the first time you use it.
+2. Say what this CHANGES for the visitor/user — not which file or line.
+3. Say what could BREAK, and how I'd undo it.
+Then wait for my approval.
+
+AFTER you've finished:
+- Max 5 bullets: what changed, why, what to test, anything unverified.
+- Then one "plain-English line": a single sentence I could repeat to someone else.
+
+RULES OF ENGAGEMENT:
+- No walls of code. Show only the lines that changed, or describe the change in words.
+- Never assume I know a tool, acronym, or convention. If unsure how much detail I want, ask.
+- If I ask "why", answer in terms of how the site behaves, not how the code works inside.
+- If something is genuinely simple, say so in one line — don't pad it.
+- If something is risky or destructive, say that FIRST, in bold, before anything else.
+- If you're unsure, say "I'm not sure". Never present a guess as fact.
+- If you make a decision I didn't ask for, flag it as a decision.
+- Short sentences. Examples over abstractions. No flattery, no filler.
