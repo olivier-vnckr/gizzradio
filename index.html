@@ -129,10 +129,10 @@
     }
     .header { text-align: center; margin-bottom: 40px; }
 
-    /* ── GEOMETRIC BARS HEADER ── */
-    @keyframes barSweep {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
+    /* ── MELT WORDMARK ── */
+    @keyframes meltBreathe {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.02); }
     }
 
     .header h1 {
@@ -142,21 +142,23 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       line-height: 1.1;
-      margin-bottom: 8px;
+      color: #39ff14;
       display: inline-block;
-      background: repeating-linear-gradient(90deg,
-        #ffcc00 0, #ffcc00 4px,
-        transparent 4px, transparent 12px,
-        #39ff14 12px, #39ff14 16px,
-        transparent 16px, transparent 24px,
-        #ff4500 24px, #ff4500 28px,
-        transparent 28px, transparent 36px);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: barSweep 3s linear infinite;
+      margin-bottom: 8px;
+      padding: 0.08em 0.2em;   /* breathing room so the warp doesn't clip */
+      overflow: visible;
+      filter: url(#meltFilter);
+      animation: meltBreathe 9s ease-in-out infinite;
     }
+
+    /* Accessibility: strip motion + warp for users who ask for it */
+    @media (prefers-reduced-motion: reduce) {
+      .header h1 {
+        filter: none;
+        animation: none;
+      }
+    }
+
     .header .subtitle {
       font-family: 'Black Ops One', 'Inter', sans-serif;
       font-size: 0.9rem;
@@ -621,7 +623,10 @@
       .page-wrapper { padding: 16px 12px 40px; }
       .main-card { padding: 24px 16px; }
       
-      .header h1 { font-size: 2.6rem; }
+      .header h1 {
+        font-size: 2.6rem;
+        filter: url(#meltFilterLite);   /* lighter warp for phones */
+      }
       .header .subtitle {
         padding-left: 8px;
         padding-right: 8px;
@@ -686,6 +691,30 @@
   </script>
 </head>
 <body>
+
+<!-- Melt wordmark filter -->
+<svg width="0" height="0" aria-hidden="true" focusable="false"
+     style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <filter id="meltFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.14" numOctaves="2" seed="3" result="noise">
+        <animate attributeName="baseFrequency" dur="10s"
+                 values="0.008 0.14; 0.016 0.22; 0.008 0.14" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="14"
+                         xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <filter id="meltFilterLite" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.12" numOctaves="1" seed="3" result="noise">
+        <animate attributeName="baseFrequency" dur="12s"
+                 values="0.008 0.12; 0.014 0.18; 0.008 0.12" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="8"
+                         xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
 
 <div class="dragon-eyes">👁️‍🗨️👁️‍🗨️</div>
 

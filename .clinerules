@@ -12,6 +12,7 @@ This repo is the FRONTEND ONLY: one static page (index.html) with inline <style>
 Hosted on GitHub Pages with the custom domain gizzradio.live. main = production.
 
 ## SCOPE — NEVER TOUCH, NEVER PROPOSE COMMANDS FOR
+<<<<<<< HEAD
 This repo is one part of a bigger setup. Everything else is out of bounds:
 - The streaming server and its admin interface (music library, playlists, playback rules,
   server config)
@@ -21,6 +22,15 @@ This repo is one part of a bigger setup. Everything else is out of bounds:
 - Any credential or secret belonging to any system
 If a task seems to need any of the above, STOP and tell me what I would have to change
 myself — don't attempt it.
+=======
+- The VPS (Contabo): AzuraCast, Docker, NGINX, liquidsoap.liq, the AzuraCast DB,
+  /var/www/shows/, certbot
+- n8n (any instance or workflow)
+- DNS and domain settings (Namecheap, Cloudflare)
+- GitHub Pages settings, branch/repo settings
+- Any server-side credential or secret
+If a task appears to require any of the above, STOP and tell me — I'll handle it myself.
+>>>>>>> 000727a4b07ab3197bebc4f70edfd20ea6d74abc
 
 ## NON-NEGOTIABLES (fragile — don't touch without my explicit instruction + a test plan)
 - iOS header fixes: the dark text-shadow outline and the
@@ -31,8 +41,13 @@ myself — don't attempt it.
 - One-at-a-time playback (shared activeStation state) is intended behaviour, not a bug.
 - Keep the fan-run / non-official / non-profit / donation framing in the footer.
   Never weaken or remove the disclaimer. Never add anything commercial.
+<<<<<<< HEAD
 - Never add secrets, API keys, or tokens to any file. The existing public analytics
   beacon token in index.html is public by design — don't add anything like it.
+=======
+- Never add secrets, API keys, or tokens to any file. The existing Cloudflare beacon
+  token is public by design — don't add more.
+>>>>>>> 000727a4b07ab3197bebc4f70edfd20ea6d74abc
 
 ## WORKING RULES
 - Never run destructive commands (rm, rm -rf, sudo, chmod, mv on tracked files).
@@ -44,20 +59,35 @@ myself — don't attempt it.
   asking first and explaining the trade-off. This project deliberately has none.
 - Don't assume something exists (file, setting, config). Check, or ask. Mark uncertainty
   explicitly and never claim something works without evidence — write "unverified" instead.
+<<<<<<< HEAD
 - This file is public: never add credentials, server paths, or infrastructure details to it.
 
 ## LOCAL TESTING
 - No build step. Serve and open: python3 -m http.server 8080 -> http://localhost:8080
 - WARNING: the page fetches LIVE production data from the public radio API (read-only).
   Local dev is not isolated — real now-playing/show data is expected.
+=======
+
+## LOCAL TESTING
+- No build step. Serve and open: python3 -m http.server 8080 -> http://localhost:8080
+- WARNING: the page fetches LIVE production data from radio.gizzradio.live
+  (read-only). Local dev is not isolated — real now-playing/show data is expected.
+>>>>>>> 000727a4b07ab3197bebc4f70edfd20ea6d74abc
 - After CSS/layout changes, test at mobile width (<600px) as well, and flag iOS risks.
 
 ## CONTENT — WHERE THINGS LIVE
 - Site copy, titles, outbound links, donation button -> index.html (edit here)
+<<<<<<< HEAD
 - Music, playlists, playback rules -> streaming admin interface (NOT here — tell me instead)
 - "Next show" data -> generated server-side and served via API (NOT editable here;
   fix at source)
 - Now Playing -> live API from the streaming server (nothing to edit)
+=======
+- Music, playlists, playback rules -> AzuraCast admin UI (NOT here — tell me instead)
+- "Next show" data -> setlist.fm -> /var/www/shows/upcoming.json on the VPS (NOT editable
+  here; fix at source)
+- Now Playing -> live AzuraCast API (nothing to edit)
+>>>>>>> 000727a4b07ab3197bebc4f70edfd20ea6d74abc
 Never invent local substitutes for anything in this list.
 
 ## HOUSE STYLE
